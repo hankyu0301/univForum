@@ -2,9 +2,7 @@ package janghankyu.univforum.domain.student;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @ToString
@@ -14,6 +12,7 @@ public class Student {
 
     @Id
     @Column(name = "student_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
     private String password;

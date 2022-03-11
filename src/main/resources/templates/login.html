@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Birthstone&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{css/style.css}">
+</head>
+<body id="LoginForm">
+<div class="container1">
+    <div class="login-form d-flex justify-content-center" style="width:70%;">
+        <div class="img-div fs-2">
+            <div>
+                <p>Sign in</p>
+                <p>Our Page!</p>
+            </div>
+        </div>
+        <div class="main-div m-0">
+            <div class="panel">
+                <h2>로그인</h2>
+                <p>아이디와 비밀번호를 입력하세요.</p>
+            </div>
+            <form id="Login" th:action th:method="post" th:object="${loginForm}">
+                <div class="form-group">
+                    <input type="email" class="form-control" th:field="*{email}" placeholder="아이디">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" th:field="*{password}" placeholder="비밀번호">
+                </div>
+                <div class="forgot">
+                    <a th:href="@{/register}">회원가입을 진행해보세요.</a>
+                </div>
+                <button type="submit" class="btn btn-primary">로그인</button>
+                <div>
+                    <br>
+                    <div th:if="${#fields.hasGlobalErrors()}">
+                        <label class="err cols-sm-2 control-label" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></label>
+                    </div>
+                    <label class="err control-label" th:errors="*{email}"></label>
+                    <label class="err control-label" th:errors="*{password}"></label>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -47,7 +47,7 @@ public class RegisterController {
         Student student = new Student(registerForm.getEmail(), registerForm.getPassword(), registerForm.getName(), registerForm.getNickname(), registerForm.getDepartment(), registerForm.getMajor());
         studentService.join(student);
 
-        rttr.addAttribute("register", true);
+        rttr.addAttribute("register", "true");
 
         return "redirect:/";
     }
