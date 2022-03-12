@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import janghankyu.univforum.domain.category.CategoryType;
 import janghankyu.univforum.web.board.dto.HotPostDto;
+import janghankyu.univforum.web.board.dto.PageResultDto;
 import janghankyu.univforum.web.board.search.SearchCondition;
 import janghankyu.univforum.web.board.search.SearchType;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +45,7 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository{
     }
 
 
-    public Page<Board> search(SearchCondition searchCondition, Pageable pageable) {
+    public PageResultDto<Board> search(SearchCondition searchCondition, Pageable pageable) {
 
         QueryResults<Board> results = queryFactory
                 .selectFrom(board)
@@ -57,11 +58,14 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository{
         List<Board> content = results.getResults();
         long num = results.getTotal();
 
-        return new PageImpl<>(content, pageable, num);
+        Page<Board> boardPage = new PageImpl<>(content, pageable, num);
+        int totalPages = boardPage.getTotalPages();
+
+        return new PageResultDto<Board>(content,totalPages,pageable);
     }
 
 
-    public Page<Board> findBoardByPaging(Pageable pageable) {
+    public PageResultDto<Board> findBoardByPaging(Pageable pageable) {
         log.info("pageable : {}", pageable.getOffset());
 
         QueryResults<Board> results = queryFactory
@@ -74,11 +78,13 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository{
         List<Board> content = results.getResults();
         long num = results.getTotal();
 
-        return new PageImpl<>(content, pageable, num);
+        Page<Board> boardPage = new PageImpl<>(content, pageable, num);
+        int totalPages = boardPage.getTotalPages();
+        return new PageResultDto<Board>(content,totalPages,pageable);
     }
 
 
-    public Page<Board> classifyByCategory(CategoryType categoryType, Pageable pageable) {
+    public PageResultDto<Board> classifyByCategory(CategoryType categoryType, Pageable pageable) {
         QueryResults<Board> results = queryFactory
                 .selectFrom(board)
                 .where(board.category.categoryType.eq(categoryType))
@@ -90,7 +96,9 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository{
         List<Board> content = results.getResults();
         long num = results.getTotal();
 
-        return new PageImpl<>(content, pageable, num);
+        Page<Board> boardPage = new PageImpl<>(content, pageable, num);
+        int totalPages = boardPage.getTotalPages();
+        return new PageResultDto<Board>(content,totalPages,pageable);
     }
 
     BooleanBuilder isSearchable(SearchType searchType, String content) {

@@ -137,7 +137,7 @@
                 <button class="like" th:onclick="|location.href='@{/main/board(category=${T(janghankyu.univforum.domain.category.CategoryType).BACK})}'|">백엔드 게시판</button>
             </div>
             <div class="videos">
-                <div class="video anim" style="--delay: .4s" th:each="board : ${boards.content}" th:if="${boards != null}" th:onclick="|location.href='@{/main/board/{id}(id=${board.id})}'|">
+                <div class="video anim" style="--delay: .4s" th:each="board : ${boards.entities}" th:if="${boards != null}" th:onclick="|location.href='@{/main/board/{id}(id=${board.id})}'|">
                     <div class="video-time" th:field="${board.id}" th:text="${board.id}"></div>
                     <div class="video-wrapper">
                         <video muted="" autoplay loop class="random-video">
@@ -156,44 +156,25 @@
                     <div class="video-view" th:field="${board.hit}" th:text="|조회수 : ${board.hit}|"></div>
                 </div>
             </div>
-            <div class="paging-wrapper" th:if="${!boards.isEmpty()}">
-                <nav
-                        th:with="pageNumber = ${boards.pageable.pageNumber},
-                        pageSize = 5,
-                        totalPages = ${boards.totalPages},
-                        startPage = ${T(Math).floor(pageNumber / pageSize) * pageSize + 1},
-                        tempEndPage = ${startPage + pageSize - 1},
-                        endPage = ${tempEndPage > totalPages ? totalPages : tempEndPage}"
-                        aria-label="Page navigation">
-                    <ul class="pagination" display="flex">
-                        <li class="page-item" th:classappend="${pageNumber <= pageSize} ? 'disabled'">
-                            <a class="page-link" th:href="@{/main/board}">
-                                <span>&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item" th:classappend="${T(Math).floor(totalPages/5)*5 > startPage} ? 'disabled'" >
-                            <a class="page-link" th:href="@{/main/board(page=${#numbers.formatDecimal(startPage - pageSize, 0, -1)})}" aria-label="Previous">
-                                <span aria-hidden="true">&lt;</span>
-                            </a>
-                        </li>
+            <div class="paging-wrapper">
 
-                        <li th:each="page: ${#numbers.sequence(startPage, endPage)}" th:classappend="${page == pageNumber + 1} ? 'active'" class="page-item">
-                            <a th:text="${page}" class="page-link" th:href="@{/main/board(page=${page})}"></a>
-                        </li>
+                <ul class="pagination h-100 justify-content-center align-items-center">
 
-                        <li class="page-item" th:classappend="${T(Math).floor(totalPages/5)*5 <= startPage} ? 'disabled'" >
-                            <a class="page-link" th:href="@{/main/board(page=${#numbers.formatDecimal(startPage + pageSize, 0, -1)})}" aria-label="Next">
-                                <span aria-hidden="true">&gt;</span>
-                            </a>
-                        </li>
+                    <li class="page-item " th:if="${boards.prev}">
+                        <a class="page-link" th:href="@{/main/board(page= ${boards.start -1})}" tabindex="-1">Prev</a>
+                    </li>
 
-                        <li class="page-item" th:classappend=" ${T(Math).floor(totalPages/5)*5 <= startPage} ? 'disabled'">
-                            <a class="page-link" th:href="@{/main/board(page=${totalPages})}">
-                                <span>&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                    <li th:class=" 'page-item ' + ${boards.page == page?'active':''} " th:each="page: ${boards.pageList}">
+                        <a class="page-link" th:href="@{/main/board(page = ${page})}">
+                            [[${page}]]
+                        </a>
+                    </li>
+
+                    <li class="page-item" th:if="${boards.next}">
+                        <a class="page-link" th:href="@{/main/board(page= ${boards.end + 1} )}">Next</a>
+                    </li>
+                </ul>
+
             </div>
             <div class="stream-area">
                 <div class="video-stream">

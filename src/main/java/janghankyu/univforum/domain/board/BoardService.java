@@ -4,6 +4,7 @@ import janghankyu.univforum.domain.category.CategoryType;
 import janghankyu.univforum.web.board.dto.BoardPostDto;
 import janghankyu.univforum.web.board.dto.BoardUpdateDto;
 import janghankyu.univforum.web.board.dto.HotPostDto;
+import janghankyu.univforum.web.board.dto.PageResultDto;
 import janghankyu.univforum.web.board.search.SearchCondition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,11 +24,11 @@ public interface BoardService {
 
     Board findBoard(Long boardId);
 
-    Page<Board> findBoards(SearchCondition searchCondition, Pageable pageable);
+    PageResultDto<Board> findBoards(SearchCondition searchCondition, Pageable pageable);
 
-    Page<Board> findBoards(CategoryType categoryType, Pageable pageable);
+    PageResultDto<Board> findBoards(CategoryType categoryType, Pageable pageable);
 
-    Page<Board> findBoards(Pageable pageable);
+    PageResultDto<Board> findBoards(Pageable pageable);
 
     List<HotPostDto> findHotPosts();
 }

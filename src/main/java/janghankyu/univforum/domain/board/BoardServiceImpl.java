@@ -9,6 +9,7 @@ import janghankyu.univforum.domain.file.AttachmentService;
 import janghankyu.univforum.web.board.dto.BoardPostDto;
 import janghankyu.univforum.web.board.dto.BoardUpdateDto;
 import janghankyu.univforum.web.board.dto.HotPostDto;
+import janghankyu.univforum.web.board.dto.PageResultDto;
 import janghankyu.univforum.web.board.search.SearchCondition;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,17 +72,17 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Transactional(readOnly = true)
-    public Page<Board> findBoards(SearchCondition searchCondition, Pageable pageable) {
+    public PageResultDto<Board> findBoards(SearchCondition searchCondition, Pageable pageable) {
         return boardRepository.search(searchCondition, pageable);
     }
 
     @Transactional(readOnly = true)
-    public Page<Board> findBoards(CategoryType categoryType, Pageable pageable) {
+    public PageResultDto<Board> findBoards(CategoryType categoryType, Pageable pageable) {
         return boardRepository.classifyByCategory(categoryType, pageable);
     }
 
     @Transactional(readOnly = true)
-    public Page<Board> findBoards(Pageable pageable) {
+    public PageResultDto<Board> findBoards(Pageable pageable) {
         return boardRepository.findBoardByPaging(pageable);
     }
 
